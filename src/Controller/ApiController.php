@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends AbstractController
 {
@@ -217,7 +218,7 @@ class ApiController extends AbstractController
         }
         else{
             return $this->json([
-                "status" => 405,
+                "status" => Response::HTTP_METHOD_NOT_ALLOWED,
                 "message" => "Method not allowed",
                 "data" => [],
             ]);
