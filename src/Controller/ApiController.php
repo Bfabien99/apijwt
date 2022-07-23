@@ -186,10 +186,21 @@ class ApiController extends AbstractController
                     "message" => "Token non valide!",
                     "data" => [],
                 ]);
-                exist();
+                exit();
             }
 
             if($this->verifyToken($token)){
+
+                // On vérifie la date d'expiration du token
+                if($this->isExpired($token)){
+                    return $this->json([
+                        "status" => 400,
+                        "message" => "Le Token à expiré!",
+                        "data" => [],
+                    ]);
+                    exit();
+                }
+
                 return $this->json([
                     "status" => 200,
                     "message" => "User exist",
