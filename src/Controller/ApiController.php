@@ -101,8 +101,7 @@ class ApiController extends AbstractController
     ########################################
     private function verifyToken(string $token):bool
     {
-           //On récupère le Header et le Payload
-        //On les décode
+        //On récupère le Header et le Payload
         $Header = $this->getHeader($token);
         $Payload = $this->getPayload($token);
         
@@ -151,10 +150,34 @@ class ApiController extends AbstractController
     ######################################
     ####### ROUTES D'AUTHENTIFICATION ###
     #####################################
-    #[Route('/auth/{token}', name: 'apiAuth')]
-    public function login(string $token): JsonResponse
+    #[Route('/auth', name: 'apiAuth')]
+    public function login(): JsonResponse
     {
         if($_SERVER['REQUEST_METHOD'] == "POST"){
+
+            ## On vérifie si le token est présent
+            if(isset($_SERVER['Authorization'])){
+                $token = trim($_SERVER['Authorization']);
+            }
+            elseif(isset($_SERVER['HTTP_AUTHORIZATION'])){
+                $token = trim($_SERVER['HTTP_AUTHORIZATION']);
+                $token = str_replace('Bearer ', '', $token);
+            }elseif(function_exists('apache_request_headers')){
+                $requestHeaders = apache_request_headers();
+                if(isset($requestHeaders['Authorization'])){
+                    $token = trim($requestHeaders['Authorization']);
+                }
+            }
+
+            if(!isset($token)){
+                return $this->json([
+                    "status" => 400,
+                    "message" => "Token introuvable",
+                    "data" => [],
+                ]);
+                exit();
+            }
+
             if($this->verifyToken($token)){
                 return $this->json([
                     "status" => 200,
@@ -169,7 +192,8 @@ class ApiController extends AbstractController
                 ]);
             }
             
-        }else{
+        }
+        else{
             return $this->json([
                 "status" => 405,
                 "message" => "Method not allowed",
