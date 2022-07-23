@@ -169,6 +169,7 @@ class ApiController extends AbstractController
                 }
             }
 
+            // On vérifie si le token existe
             if(!isset($token)){
                 return $this->json([
                     "status" => 400,
@@ -176,6 +177,16 @@ class ApiController extends AbstractController
                     "data" => [],
                 ]);
                 exit();
+            }
+
+            // On vérifie si sa structure est valide
+            if(!$this->isValid($token)){
+                return $this->json([
+                    "status" => 200,
+                    "message" => "Token non valide!",
+                    "data" => [],
+                ]);
+                exist();
             }
 
             if($this->verifyToken($token)){
