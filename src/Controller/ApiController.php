@@ -144,7 +144,10 @@ class ApiController extends AbstractController
     public function index(): JsonResponse
     {
         return $this->json([
-            'message' => 'This is my fist symfony api with JWT',
+            'message' => 'API PROJECT WITH SYMFONY #1',
+            'author' => 'bfabien99',
+            'email' => 'fabienbrou99@gmail.com',
+            'date' => 'Saturday 23th July 2022 - 03:38 PM'
         ]);
     }
 
