@@ -11,4 +11,4 @@
 - POST a json body request to get a Json Web Token
 
 # '/auth'
-- Put your token in headers see his state
+- Put your token in headers to see his state
